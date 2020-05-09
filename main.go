@@ -6,15 +6,18 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func sigma(n int) int {
 	sum := 0
-	for i := 0; i <= 10000; i++ {
+	for i := 0; i <= n; i++ {
 		sum += i
 	}
+	return sum
+}
 
+func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       fmt.Sprintf("Hello %d", sum),
+		Body:       fmt.Sprintf("Hello %d", sigma(100000)),
 	}, nil
 }
 
