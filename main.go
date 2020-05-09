@@ -6,18 +6,17 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func sigma(n int) int {
-	sum := 0
-	for i := 0; i <= n; i++ {
-		sum += i
+func fibonacci(n int) int {
+	if n < 2 {
+		return 1
 	}
-	return sum
+	return n + fibonacci(n-1)
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       fmt.Sprintf("Hello %d", sigma(100000)),
+		Body:       fmt.Sprintf("Hello %d", fibonacci(100)),
 	}, nil
 }
 
