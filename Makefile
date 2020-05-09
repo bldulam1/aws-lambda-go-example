@@ -1,7 +1,7 @@
 API = ../../api
-SRC = ./src
+SRC = ./functions
 
-build:
+all:
 	go get ./...
 	cd $(SRC)/fibonacci && go build -o $(API)/fibonacci ./...
 	cd $(SRC)/hello && go build -o $(API)/hello ./...
