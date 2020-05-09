@@ -14,7 +14,7 @@ func fibonacci(n int) int {
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Println(request.MultiValueQueryStringParameters)
+	fmt.Println(request.QueryStringParameters)
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Body:       fmt.Sprintf("Hello %d", fibonacci(10)),
