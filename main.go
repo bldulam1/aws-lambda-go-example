@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"net/http"
+	"strconv"
 )
 
 func fibonacci(n int) int {
@@ -14,10 +16,19 @@ func fibonacci(n int) int {
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Println(request.QueryStringParameters)
+	nStr := request.QueryStringParameters["n"]
+	n, err := strconv.Atoi(nStr)
+
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusBadRequest,
+			Body:       "Failed to parse n",
+		}, err
+	}
+
 	return events.APIGatewayProxyResponse{
-		StatusCode: 200,
-		Body:       fmt.Sprintf("Hello %d", fibonacci(10)),
+		StatusCode: http.StatusOK,
+		Body:       fmt.Sprintf("Hello %d", fibonacci(n)),
 	}, nil
 }
 
