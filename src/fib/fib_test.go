@@ -26,27 +26,27 @@ func TestFibonacci(t *testing.T) {
 	}
 }
 
-func TestFactorial(t *testing.T) {
-	tables := []struct {
-		x int
-		y int
-	}{
-		{1, 1},
-		{2, 2},
-		{3, 6},
-		{4, 24},
-		{5, 120},
-		{6, 720},
-		{7, 5040},
-		{8, 40320},
-		{9, 362880},
-		{10, 3628800},
-	}
-
-	for _, table := range tables {
-		fib := Factorial(table.x)
-		if fib != table.y {
-			t.Errorf("FAILED: Fib(%d) == %d != %d", table.x, table.y, fib)
-		}
-	}
-}
+//func TestFactorial(t *testing.T) {
+//	tables := []struct {
+//		x int
+//		y int
+//	}{
+//		{1, 1},
+//		{2, 2},
+//		{3, 6},
+//		{4, 24},
+//		{5, 120},
+//		{6, 720},
+//		{7, 5040},
+//		{8, 40320},
+//		{9, 362880},
+//		{10, 3628800},
+//	}
+//
+//	for _, table := range tables {
+//		fib := Factorial(table.x)
+//		if fib != table.y {
+//			t.Errorf("FAILED: Fib(%d) == %d != %d", table.x, table.y, fib)
+//		}
+//	}
+//}
