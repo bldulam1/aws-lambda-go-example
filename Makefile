@@ -3,7 +3,7 @@ SRC = ./functions
 
 # Services
 S_FIB = fibonacci
-S_FAC = factorial
+S_TOD = todos
 
 all:
 	go get ./...
