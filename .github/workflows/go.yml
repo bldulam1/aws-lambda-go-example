@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ staging ]
+    branches: [ staging, master ]
   pull_request:
     branches: [ master ]
 
