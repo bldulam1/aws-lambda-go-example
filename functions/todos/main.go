@@ -41,6 +41,7 @@ func executeQuery(query string, schema graphql.Schema) (error, *graphql.Result) 
 }
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	// Get the graphql query
 	query := request.QueryStringParameters["query"]
 	err, result := executeQuery(query, schema)
 	statusCode := http.StatusOK
@@ -48,6 +49,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		statusCode = http.StatusInternalServerError
 	}
 
+	// Convert the output int JSON format
 	jsonBytes, err := json.Marshal(result.Data)
 	if err != nil {
 		statusCode = http.StatusInternalServerError

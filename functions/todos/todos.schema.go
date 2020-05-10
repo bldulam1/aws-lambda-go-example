@@ -136,9 +136,6 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 			},
 		},
 
-		/*
-		   curl -g 'http://localhost:8080/graphql?query={todoList{id,text,done}}'
-		*/
 		"todoList": &graphql.Field{
 			Type:        graphql.NewList(todoType),
 			Description: "List of todos",
