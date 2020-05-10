@@ -22,6 +22,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	// Calculate fibonacci sequence
 	factorialN := fib.Factorial(n)
+	fmt.Println(n, factorialN)
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Body:       fmt.Sprintf("Factorial(%s) = %d", nStr, factorialN),
