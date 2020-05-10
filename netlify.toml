@@ -1,6 +1,6 @@
 [build]
   command = "make all"
-  functions = "api"
+  functions = "bin"
   publish = "site"
 [build.environment]
   # Change this path with the path to your repository
