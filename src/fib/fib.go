@@ -4,7 +4,7 @@ var fibMem = map[int]int{
 	0: 0, 1: 1, 2: 1,
 }
 
-var factMem = map[int]int{
+var factMem = map[float64]float64{
 	0: 1, 1: 1, 2: 2,
 }
 
@@ -15,7 +15,7 @@ func Fibonacci(n int) int {
 	return fibMem[n]
 }
 
-func Factorial(n int) int {
+func Factorial(n float64) float64 {
 	if _, ok := factMem[n]; !ok {
 		factMem[n] = n * Factorial(n-1)
 	}

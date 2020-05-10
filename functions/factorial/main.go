@@ -13,7 +13,7 @@ import (
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// Get API query
 	nStr := request.QueryStringParameters["n"]
-	n, err := strconv.Atoi(nStr)
+	n, err := strconv.ParseFloat(nStr, 64)
 	if err != nil {
 		return events.APIGatewayProxyResponse{
 			StatusCode: http.StatusBadRequest,
@@ -23,10 +23,9 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	// Calculate fibonacci sequence
 	factorialN := fib.Factorial(n)
-	fmt.Println(n, nStr, factorialN)
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
-		Body:       fmt.Sprintf("Factorial(%s) = %d", nStr, factorialN),
+		Body:       fmt.Sprintf("Factorial(%s) = %f", nStr, factorialN),
 	}, nil
 }
 
