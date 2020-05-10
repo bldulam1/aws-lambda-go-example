@@ -30,8 +30,11 @@ jobs:
             dep ensure
         fi
 
-    - name: Build
-      run: make all
+    - name: Fibonacci
+      run: cd ./functions/fibonacci && go build -o ../../bin/fibonacci ./...
+
+    - name: hello
+      run: cd ./functions/hello && go build -o ../../bin/hello ./...
 
 #     - name: Test
 #       run: go test -v .
