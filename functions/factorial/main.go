@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"strconv"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/bldulam1/aws-lambda-go-example/src/fib"
-	"net/http"
-	"strconv"
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -22,7 +23,7 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 
 	// Calculate fibonacci sequence
 	factorialN := fib.Factorial(n)
-	fmt.Println(n, factorialN)
+	fmt.Println(n, nStr, factorialN)
 	return events.APIGatewayProxyResponse{
 		StatusCode: http.StatusOK,
 		Body:       fmt.Sprintf("Factorial(%s) = %d", nStr, factorialN),
