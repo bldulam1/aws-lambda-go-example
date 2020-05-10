@@ -1,40 +1,9 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"math/rand"
-	"net/http"
-	"time"
-
 	"github.com/graphql-go/graphql"
+	"math/rand"
 )
-
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-}
-
-var TodoList []Todo
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-func RandStringRunes(n int) string {
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
-	}
-	return string(b)
-}
-
-func init() {
-	todo1 := Todo{ID: "a", Text: "A todo not to forget", Done: false}
-	todo2 := Todo{ID: "b", Text: "This is the most important", Done: false}
-	todo3 := Todo{ID: "c", Text: "Please do this or else", Done: false}
-	TodoList = append(TodoList, todo1, todo2, todo3)
-
-	rand.Seed(time.Now().UnixNano())
-}
 
 // define custom GraphQL ObjectType `todoType` for our Golang struct `Todo`
 // Note that
@@ -55,13 +24,16 @@ var todoType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+// define schema, with our rootQuery and rootMutation
+var schema, _ = graphql.NewSchema(graphql.SchemaConfig{
+	Query:    rootQuery,
+	Mutation: rootMutation,
+})
+
 // root mutation
 var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
-		/*
-			curl -g 'http://localhost:8080/graphql?query=mutation+_{createTodo(text:"My+new+todo"){id,text,done}}'
-		*/
 		"createTodo": &graphql.Field{
 			Type:        todoType, // the return type for this field
 			Description: "Create new todo",
@@ -96,9 +68,6 @@ var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 				return newTodo, nil
 			},
 		},
-		/*
-			curl -g 'http://localhost:8080/graphql?query=mutation+_{updateTodo(id:"a",done:true){id,text,done}}'
-		*/
 		"updateTodo": &graphql.Field{
 			Type:        todoType, // the return type for this field
 			Description: "Update existing todo, mark it done or not done",
@@ -132,17 +101,9 @@ var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
-// root query
-// we just define a trivial example here, since root query is required.
-// Test with curl
-// curl -g 'http://localhost:8080/graphql?query={lastTodo{id,text,done}}'
 var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
-
-		/*
-		   curl -g 'http://localhost:8080/graphql?query={todo(id:"b"){id,text,done}}'
-		*/
 		"todo": &graphql.Field{
 			Type:        todoType,
 			Description: "Get single todo",
@@ -188,38 +149,12 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
-// define schema, with our rootQuery and rootMutation
-var schema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query:    rootQuery,
-	Mutation: rootMutation,
-})
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func executeQuery(query string, schema graphql.Schema) *graphql.Result {
-	result := graphql.Do(graphql.Params{
-		Schema:        schema,
-		RequestString: query,
-	})
-	if len(result.Errors) > 0 {
-		fmt.Printf("wrong result, unexpected errors: %v", result.Errors)
+func RandStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
-	return result
-}
-
-func main() {
-	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
-		result := executeQuery(r.URL.Query().Get("query"), schema)
-		json.NewEncoder(w).Encode(result)
-	})
-	// Serve static files
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/", fs)
-	// Display some basic instructions
-	fmt.Println("Now server is running on port 8080")
-	fmt.Println("Get single todo: curl -g 'http://localhost:8080/graphql?query={todo(id:\"b\"){id,text,done}}'")
-	fmt.Println("Create new todo: curl -g 'http://localhost:8080/graphql?query=mutation+_{createTodo(text:\"My+new+todo\"){id,text,done}}'")
-	fmt.Println("Update todo: curl -g 'http://localhost:8080/graphql?query=mutation+_{updateTodo(id:\"a\",done:true){id,text,done}}'")
-	fmt.Println("Load todo list: curl -g 'http://localhost:8080/graphql?query={todoList{id,text,done}}'")
-	fmt.Println("Access the web app via browser at 'http://localhost:8080'")
-
-	http.ListenAndServe(":8080", nil)
+	return string(b)
 }
